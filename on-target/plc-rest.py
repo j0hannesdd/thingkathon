@@ -35,7 +35,7 @@ def keep_alive(session, sessionID):
     
     # keep session alive
     print('keep alive..')
-    r = session.post('{base_url}/sessions/'.format(base_url=BASE_URL_PLC) + sessionID)
+    r = session.post('{base_url}/sessions/{sessionID}'.format(base_url=BASE_URL_PLC, sessionID=sessionID))
     #print(r.text)
     keep_alive_scheduler.enter(2, 1, keep_alive, argument=(session, sessionID))
     keep_alive_scheduler.run(False)
@@ -71,6 +71,7 @@ def get_data_group(session, sessionID, groupID):
 
     pprint.pprint(r.json())
 
+    return r.json()['variables']
 
 
 ######## go for it! ########
@@ -79,4 +80,9 @@ session, sessionID = setup_session()
 keep_alive(session, sessionID)
 groupID = create_data_group(session, sessionID)
 
-get_data_group(session, sessionID, groupID)
+plcData = get_data_group(session, sessionID, groupID)
+
+# push data to aws
+r = requests.post('https://hcazi6f033.execute-api.eu-central-1.amazonaws.com/Prod/ingest', data=json.dumps(plcData))
+print('{} -- {}'.format(r, r.text))
+
