@@ -194,7 +194,7 @@ function getSensors(device, sensor) {
     if (sensor) {
         return sensors[sensor];
     } else {
-        return toArray(sensor);
+        return toArray(sensors);
     }
 }
 
