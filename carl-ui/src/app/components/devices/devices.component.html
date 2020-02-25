@@ -1,0 +1,32 @@
+<mat-toolbar color="primary">
+  <span>Anlagen</span>
+</mat-toolbar>
+
+<mat-tab-group>
+    <mat-tab label="Liste">
+
+        <a class="cui-card-wrapper" routerLink="/device/1022">
+            <mat-card class="cui-card">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image"></div>
+                    <mat-card-title>Pumpe 1022</mat-card-title>
+                    <mat-card-subtitle>Dresden, Schandauer Straße 12</mat-card-subtitle>
+                </mat-card-header>
+            </mat-card>
+        </a>
+
+        <a class="cui-card-wrapper" routerLink="/device/2365">
+            <mat-card class="cui-card">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image"></div>
+                    <mat-card-title>Pumpe 2365</mat-card-title>
+                    <mat-card-subtitle>Bautzen, Hauptstraße 8</mat-card-subtitle>
+                </mat-card-header>
+            </mat-card>
+        </a>
+
+    </mat-tab>
+    <mat-tab label="Karte">
+        Map
+    </mat-tab>
+</mat-tab-group>
