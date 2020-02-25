@@ -20,6 +20,8 @@ import { DevicesComponent } from './components/devices/devices.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { TaskComponent } from './components/task/task.component';
 import { MapComponent } from './components/map/map.component';
+import { SiteComponent } from './components/site/site.component';
+import { SitesComponent } from './components/sites/sites.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { MapComponent } from './components/map/map.component';
     DevicesComponent,
     TasksComponent,
     TaskComponent,
-    MapComponent
+    MapComponent,
+    SiteComponent,
+    SitesComponent
   ],
   imports: [
     AgmCoreModule.forRoot({

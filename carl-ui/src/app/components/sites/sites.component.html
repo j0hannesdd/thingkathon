@@ -1,0 +1,23 @@
+<mat-toolbar color="primary">
+  <span>Anlagen</span>
+</mat-toolbar>
+
+<a *ngFor="let site of sites" class="cui-card-wrapper" [routerLink]="['/site/' + site.id]">
+    <mat-card class="cui-card">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{site.name}}</mat-card-title>
+            <mat-card-subtitle>{{site.type}} - {{site.address}}</mat-card-subtitle>
+        </mat-card-header>
+    </mat-card>
+</a>
+
+<!--<a class="cui-card-wrapper" routerLink="/site/2365">
+    <mat-card class="cui-card">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Anlage 2365</mat-card-title>
+            <mat-card-subtitle>Bautzen, Hauptstraße 8</mat-card-subtitle>
+        </mat-card-header>
+    </mat-card>
+</a>-->
