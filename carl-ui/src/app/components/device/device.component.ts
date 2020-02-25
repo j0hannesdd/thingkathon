@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Device } from '../../model/device';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { BackendService } from '../../services/backend.service';
 
 @Component({
   selector: 'app-device',
@@ -7,9 +11,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DeviceComponent implements OnInit {
 
-  constructor() { }
+    private routeSub: Subscription;
+
+    device: Device = new Device();
+
+  constructor(private route: ActivatedRoute, private service: BackendService) { }
 
   ngOnInit() {
+      this.routeSub = this.route.params.subscribe(params => {
+          console.log(params);
+          this.service.getDevice(params['id']).subscribe((device: Device) => {
+              console.log(device);
+              this.device = device;
+          });
+          /*this.service.getSensors(params['id']).subscribe((sensors: Sensors[]) => {
+              console.log(sensors);
+              this.sensors = sensors;
+          });*/
+    });
+  }
+
+  ngOnDestroy() {
+    this.routeSub.unsubscribe();
   }
 
 }

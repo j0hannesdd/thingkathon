@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   sites: 'https://hcazi6f033.execute-api.eu-central-1.amazonaws.com/Prod/sites',
-  devices: 'https://hcazi6f033.execute-api.eu-central-1.amazonaws.com/Prod/devices?site=',
+  devices: 'https://hcazi6f033.execute-api.eu-central-1.amazonaws.com/Prod/devices',
   sensors: 'https://hcazi6f033.execute-api.eu-central-1.amazonaws.com/Prod/sensors?device='
 };
 
