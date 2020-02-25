@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -58,6 +59,7 @@ import { EventDialogComponent } from './components/event-dialog/event-dialog.com
     MatIconModule,
     MatTabsModule,
     MatToolbarModule,
+    MatListModule,
     ToastrModule.forRoot()
   ],
   providers: [],
