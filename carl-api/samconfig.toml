@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "teamone-api"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1c3egqnh7vvpg"
+s3_prefix = "teamone-api"
+region = "eu-central-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
