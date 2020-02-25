@@ -20,6 +20,24 @@ a.cui-card-wrapper {
     font-size: 36px;
 }
 
+/* DETAILS */
+.cui-details {
+    background-color: #d0d0d0;
+    padding: 20px;
+    margin-top: 12px;
+}
+.cui-details table,
+.cui-details th,
+.cui-details td {
+  border: none;
+  text-align: left;
+}
+
+.cui-details table {
+    border-collapse: separate;
+    border-spacing: 20px 2px;
+}
+
 /* Material Icons Fonts */
 @font-face {
   font-family: 'Material Icons';

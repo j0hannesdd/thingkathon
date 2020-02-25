@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table'; 
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
@@ -20,6 +21,8 @@ import { DevicesComponent } from './components/devices/devices.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { TaskComponent } from './components/task/task.component';
 import { MapComponent } from './components/map/map.component';
+import { SiteComponent } from './components/site/site.component';
+import { SitesComponent } from './components/sites/sites.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,9 @@ import { MapComponent } from './components/map/map.component';
     DevicesComponent,
     TasksComponent,
     TaskComponent,
-    MapComponent
+    MapComponent,
+    SiteComponent,
+    SitesComponent
   ],
   imports: [
     AgmCoreModule.forRoot({

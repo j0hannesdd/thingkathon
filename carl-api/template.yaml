@@ -23,6 +23,8 @@ Resources:
           Properties:
             Path: /sites
             Method: get
+            RequestParameters:
+              - method.request.querystring.site
         TeamOneDevices:
           Type: Api
           Properties:
@@ -30,6 +32,7 @@ Resources:
             Method: get
             RequestParameters:
               - method.request.querystring.site
+              - method.request.querystring.device
         TeamOneSensors:
           Type: Api
           Properties:
@@ -37,6 +40,7 @@ Resources:
             Method: get
             RequestParameters:
               - method.request.querystring.device
+              - method.request.querystring.sensor
         TeamOneIngest:
           Type: Api
           Properties:

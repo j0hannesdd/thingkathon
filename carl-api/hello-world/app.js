@@ -1,6 +1,25 @@
-// const axios = require('axios')
-// const url = 'http://checkip.amazonaws.com/';
-let response;
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3();
+
+let realData = [];
+
+// init code, run whenever the lambda is loaded
+function init() {
+    // read latest real data from s3
+    s3.getObject({
+        Bucket: 'team-one-carl-data',
+        Key: 'data.json'
+    }, function(err, data) {
+        if (err) {
+            console.error("Failed to read data from S3!", err);
+            return;
+        }
+        console.log("got real data from s3: ", data.Body.toString())
+        realData = JSON.parse(data.Body.toString());
+    });
+}
+
+init();
 
 /**
  *
@@ -15,6 +34,7 @@ let response;
  * 
  */
 exports.lambdaHandler = async (event, context) => {
+    console.log("Request: ", {path: event.path, params: event.queryStringParameters});
     let responseData;
     switch (event.path) {
         case '/sites': responseData = getSites(); break;
@@ -31,7 +51,10 @@ exports.lambdaHandler = async (event, context) => {
     } else {
         return {
             statusCode: 200,
-            body: JSON.stringify(responseData)
+            body: JSON.stringify(responseData),
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+            },
         }
     }
 };
@@ -42,6 +65,7 @@ function getSites() {
             id: '007',
             status: 'OK',
             position: {lon: 51.271298, lat: 13.803302},
+            address: 'Kritzenhof, Hauptstraße 3',
             name: 'Beispielstation 1',
             type: 'PumpHouse'
         },
@@ -49,6 +73,7 @@ function getSites() {
             id: '008',
             status: 'WARNING',
             position: {lon: 51.241298, lat: 13.823302},
+            address: 'Wasserhan-Miedenhain, Am Werk 1a',
             name: 'Beispielstation 2',
             type: 'Storage'
         },
@@ -139,5 +164,29 @@ function getSensors(device) {
 }
 
 function postData(data) {
+    console.log("Retrieved Data", data)
+    if (typeof data === 'string') {
+        data = JSON.parse(data);
+    }
 
+    // (de)? normalize data
+    parsedData = {}
+
+
+    // append new data
+    realData.push(data);
+
+    // store data in S3 bucket.
+    s3.putObject({
+        Bucket: 'team-one-carl-data',
+        Key: 'data.json',
+        Body: JSON.stringify(data)
+    }, function(err, response) {
+        if(err) {
+            console.error("Failed to save data in s3!", err);
+        }
+    })
+    return {
+        ack: true
+    };
 }

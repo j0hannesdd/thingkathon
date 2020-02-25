@@ -1,0 +1,31 @@
+<mat-toolbar color="primary">
+  <span>Anlage</span>
+</mat-toolbar>
+
+<div class="cui-details">
+    <table>
+        <tr><th>Typ</th><td>Example</td></tr>
+        <tr><th>Standort</th><td>Dresden, Hauptstraße 1</td></tr>
+        <tr><th>Status</th><td>OK</td></tr>
+    </table>
+</div>
+
+<a *ngFor="let device of devices" class="cui-card-wrapper" [routerLink]="['/device/' + device.deviceId]">
+    <mat-card class="cui-card">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{device.name}}</mat-card-title>
+            <mat-card-subtitle>{{device.type}}</mat-card-subtitle>
+        </mat-card-header>
+    </mat-card>
+</a>
+
+<!--<a class="cui-card-wrapper" routerLink="/device/2365">
+    <mat-card class="cui-card">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Pumpe 2365</mat-card-title>
+            <mat-card-subtitle>Typ xy</mat-card-subtitle>
+        </mat-card-header>
+    </mat-card>
+</a>-->
