@@ -77,35 +77,42 @@ function getSites(site) {
             status: 'OK',
             position: { lon: 51.271298, lat: 13.803302 },
             address: 'Kritzenhof, Hauptstraße 3',
-            name: 'Beispielstation 1',
-            type: 'PumpHouse'
+            name: 'Kritzendorf',
+            type: 'PumpHouse',
+            fillLevel: 42
         },
         '008': {
             id: '008',
             status: 'WARNING',
             position: { lon: 51.241298, lat: 13.823302 },
             address: 'Wasserhan-Miedenhain, Am Werk 1a',
-            name: 'Beispielstation 2',
-            type: 'Storage'
+            name: 'Dresden 2',
+            type: 'Storage',
+            fillLevel: 23
         },
         '009-09123-123-1231345': {
             id: '009-09123-123-1231345',
             status: 'FAULTY',
             position: { lon: 51.241298, lat: 13.823302 },
             address: 'Wasserhan-Miedenhain, Am Werk 1b',
-            name: 'Beispielstation 3',
-            type: 'Storage'
+            name: 'Leipzig',
+            type: 'Storage',
+            fillLevel: 78
         }
     }
 
     // add latest "real" data
+    let fillLevelMax = realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].Diagnostic.GreatestValue
+    let fillLevelCurrent = realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].ProcessValue
+
     sites.real = {
         id: 'real',
         status: 'FAULTY',
         position: { lon: 51.082622, lat: 13.725815 },
         address: 'Dresden, Riesaer Str. 5',
-        name: realData[realData.length - 1]['udtConnectionPoint.System.Parameter.NameOfStation'],
-        type: 'PumpHouse'
+        name: realData[realData.length - 1]['udtConnectionPoint.System'].Parameter.NameOfStation,
+        type: 'PumpHouse',
+        fillLevel: fillLevelCurrent / fillLevelMax
     }
 
     if (site) {
