@@ -34,6 +34,7 @@ init();
  * 
  */
 exports.lambdaHandler = async (event, context) => {
+    console.log("Request: ", {path: event.path, params: event.queryStringParameters});
     let responseData;
     switch (event.path) {
         case '/sites': responseData = getSites(); break;
@@ -50,7 +51,10 @@ exports.lambdaHandler = async (event, context) => {
     } else {
         return {
             statusCode: 200,
-            body: JSON.stringify(responseData)
+            body: JSON.stringify(responseData),
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+            },
         }
     }
 };
@@ -61,6 +65,7 @@ function getSites() {
             id: '007',
             status: 'OK',
             position: {lon: 51.271298, lat: 13.803302},
+            address: 'Kritzenhof, Hauptstraße 3',
             name: 'Beispielstation 1',
             type: 'PumpHouse'
         },
@@ -68,6 +73,7 @@ function getSites() {
             id: '008',
             status: 'WARNING',
             position: {lon: 51.241298, lat: 13.823302},
+            address: 'Wasserhan-Miedenhain, Am Werk 1a',
             name: 'Beispielstation 2',
             type: 'Storage'
         },
@@ -158,9 +164,15 @@ function getSensors(device) {
 }
 
 function postData(data) {
+    console.log("Retrieved Data", data)
     if (typeof data === 'string') {
         data = JSON.parse(data);
     }
+
+    // (de)? normalize data
+    parsedData = {}
+
+
     // append new data
     realData.push(data);
 
