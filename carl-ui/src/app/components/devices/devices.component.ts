@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BackendService } from '../../services/backend.service';
+import { Site } from '../../model/site';
 
 @Component({
   selector: 'app-devices',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DevicesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private service: BackendService) { }
 
   ngOnInit() {
+      this.service.getSites().subscribe((sites: Site[]) => {
+          console.log(sites);
+      });
   }
 
 }

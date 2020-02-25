@@ -41,6 +41,7 @@ import { MapComponent } from './components/map/map.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
