@@ -3,7 +3,11 @@
 </mat-toolbar>
 
 <div class="cui-details">
-    
+    <table>
+        <tr><th>Typ</th><td>Example</td></tr>
+        <tr><th>Standort</th><td>Dresden, Hauptstraße 1</td></tr>
+        <tr><th>Status</th><td>OK</td></tr>
+    </table>
 </div>
 
 <a *ngFor="let device of devices" class="cui-card-wrapper" [routerLink]="['/device/' + device.deviceId]">
