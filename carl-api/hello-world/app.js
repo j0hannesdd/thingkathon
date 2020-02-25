@@ -80,7 +80,10 @@ function getSites(site) {
             name: 'Kritzendorf',
             type: 'PumpHouse',
             fillLevel: 42,
-            pumpCount: 2
+            devices: [
+                {status: 'OFF'},
+                {status: 'OK'}
+            ]
         },
         '008': {
             id: '008',
@@ -90,7 +93,12 @@ function getSites(site) {
             name: 'Dresden 2',
             type: 'Storage',
             fillLevel: 23,
-            pumpCount: 4
+            devices: [
+                {status: 'OK'},
+                {status: 'WARNING'},
+                {status: 'OFF'},
+                {status: 'OK'}
+            ]
         },
         '009-09123-123-1231345': {
             id: '009-09123-123-1231345',
@@ -100,13 +108,34 @@ function getSites(site) {
             name: 'Leipzig',
             type: 'Storage',
             fillLevel: 78,
-            pumpCount: 3
+            devices: [
+                {status: 'OK'},
+                {status: 'FAULTY'},
+                {status: 'OK'}
+            ]
         }
     }
 
     // add latest "real" data
     //let fillLevelMax = realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].Diagnostic.GreatestValue
     //let fillLevelCurrent = realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].ProcessValue
+    let deviceList = []
+    
+   realData[realData.length - 1]['udtConnectionPoint.PumpControl'].Pumps.forEach(element => {
+        // default state is WARNING
+        let status = 'WARNING'
+ 
+        if (element.Error == true) {
+            status = 'FAULTY'
+        } else if (element.Error == false && element.Warning == false && element.Ready == true) {
+            status = 'OK'
+        } else if (element.Error == false && element.Running == false && element.Ready == true) {
+            status = 'OFF'
+        }
+
+       deviceList.push({status})
+    }); 
+
     sites.real = {
         id: 'real',
         status: 'FAULTY',
@@ -115,7 +144,8 @@ function getSites(site) {
         name: realData[realData.length - 1]['udtConnectionPoint.System'].Parameter.NameOfStation,
         type: 'PumpHouse',
         fillLevel: Math.floor( realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].Diagnostic.RawValue_Percent ),
-        pumpCount: realData[realData.length - 1]['udtConnectionPoint.System'].Parameter.NumberOfPumps
+        //pumpCount: realData[realData.length - 1]['udtConnectionPoint.System'].Parameter.NumberOfPumps
+        devices: deviceList
     }
 
     if (site) {
@@ -139,11 +169,6 @@ function getDevices(site, device) {
             nextMaintanance: new Date(Date.now() + 1000 * 60 * 60 * 24 * 10),
         },
         name: 'Input pump one',
-        sensors: [
-            {
-                name: 'Temperature'
-            }
-        ]
     };
     devices[site + '-002'] = {
         siteId: site,
