@@ -24,7 +24,7 @@ export class AppComponent {
 
       const dialogRef = this.dialog.open(EventDialogComponent, {
           width: '250px',
-          height: '250px',
+          height: '300px',
           data: {name: ''}
         });
 

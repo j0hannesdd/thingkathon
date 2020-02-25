@@ -15,4 +15,8 @@ export class EventDialogComponent implements OnInit {
   ngOnInit() {
   }
 
+  close() {
+    this.dialogRef.close('');
+  }
+
 }
