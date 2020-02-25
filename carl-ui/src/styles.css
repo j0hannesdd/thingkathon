@@ -4,7 +4,11 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 body {
+<<<<<<< HEAD
     background-color: #2E2E2E;
+=======
+    background-color: #494949;
+>>>>>>> 3bfe7b5c7077f126e86807564bb2ae8b448d59b1
 }
 
 .cui-card {
