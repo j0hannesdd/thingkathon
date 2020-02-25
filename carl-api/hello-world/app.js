@@ -169,7 +169,7 @@ function getDevices(site, device) {
     if (device) {
         return devices[device];
     } else {
-        return toArray(device);
+        return toArray(devices);
     }
 }
 
