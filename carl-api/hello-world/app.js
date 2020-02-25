@@ -139,11 +139,6 @@ function getDevices(site, device) {
             nextMaintanance: new Date(Date.now() + 1000 * 60 * 60 * 24 * 10),
         },
         name: 'Input pump one',
-        sensors: [
-            {
-                name: 'Temperature'
-            }
-        ]
     };
     devices[site + '-002'] = {
         siteId: site,
