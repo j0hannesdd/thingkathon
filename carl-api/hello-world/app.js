@@ -36,10 +36,12 @@ init();
 exports.lambdaHandler = async (event, context) => {
     console.log("Request: ", {path: event.path, params: event.queryStringParameters});
     let responseData;
+    event.queryStringParameters = event.queryStringParameters || {}
+    let {site,device,sensor} = event.queryStringParameters
     switch (event.path) {
-        case '/sites': responseData = getSites(); break;
-        case '/devices': responseData = getDevices(event.queryStringParameters.site); break;
-        case '/sensors': responseData = getSensors(event.queryStringParameters.device); break;
+        case '/sites': responseData = getSites(site); break;
+        case '/devices': responseData = getDevices(site, device); break;
+        case '/sensors': responseData = getSensors(device, sensor); break;
         case '/ingest': responseData = await postData(event.body); break;
         default: responseData = {
             statusCode: 404,
@@ -59,7 +61,17 @@ exports.lambdaHandler = async (event, context) => {
     }
 };
 
-function getSites() {
+function getSites(site) {
+    if (site) {
+        return {
+            id: '007',
+            status: 'OK',
+            position: {lon: 51.271298, lat: 13.803302},
+            address: 'Kritzenhof, Hauptstraße 3',
+            name: 'Beispielstation 1',
+            type: 'PumpHouse'
+        }
+    }
     return [
         {
             id: '007',
@@ -87,7 +99,27 @@ function getSites() {
     ];
 }
 
-function getDevices(site) {
+function getDevices(site, device) {
+    if (device) {
+        return {
+            siteId: '008',
+            deviceId: device,
+            status: 'OK',
+            active: true,
+            type: 'LEWA Membrandosierpumpe',
+            alerts: [],
+            maintenance: {
+                lastMaintained: new Date(Date.now()-1000*60*60*24*40),
+                nextMaintanance: new Date(Date.now()+1000*60*60*24*10),
+            },
+            name: 'Input pump one',
+            sensors: [
+                {
+                    name: 'Temperature'
+                }
+            ]
+        }
+    }
     return [
         {
             siteId: site,
@@ -142,14 +174,14 @@ function getDevices(site) {
     ];
 }
 
-function getSensors(device) {
+function getSensors(device, sensor) {
     let history1 = [];
     let history2 = [];
     for (var i=0;i<100;i++) {
         history1.push(Math.random());
         history2.push(Math.random() * 1000);
     }
-    return [
+    let sensors = [
         {
             currentValue: Math.random(),
             history: history1,
@@ -161,6 +193,10 @@ function getSensors(device) {
             unit: 'pound/inch²'
         }
     ];
+    if (sensor) {
+        return sensors[0];
+    }
+    return sensors;
 }
 
 async function postData(data) {

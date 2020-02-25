@@ -21,6 +21,22 @@ describe('Carl API', function () {
         expect(response).to.be.an('array');
     });
 
+    it('verifies /sites successful single response', async () => {
+        let event = {
+            path: '/sites',
+            queryStringParameters: {site: '009'}
+        };
+        const result = await app.lambdaHandler(event, context)
+
+        expect(result).to.be.an('object');
+        expect(result.statusCode).to.equal(200);
+        expect(result.body).to.be.an('string');
+
+        let response = JSON.parse(result.body);
+
+        expect(response).to.be.an('object');
+    });
+
     it('verifies /devices successful response', async () => {
         let event = {
             path: '/devices',
@@ -39,6 +55,25 @@ describe('Carl API', function () {
         expect(response).to.be.an('array');
     });
 
+    it('verifies /devices successful single response', async () => {
+        let event = {
+            path: '/devices',
+            queryStringParameters: {
+                site: 'test',
+                device: 'test'
+            }
+        };
+        const result = await app.lambdaHandler(event, context)
+
+        expect(result).to.be.an('object');
+        expect(result.statusCode).to.equal(200);
+        expect(result.body).to.be.an('string');
+
+        let response = JSON.parse(result.body);
+
+        expect(response).to.be.an('object');
+    });
+
     it('verifies /sensors successful response', async () => {
         let event = {
             path: '/sensors',
@@ -55,6 +90,25 @@ describe('Carl API', function () {
         let response = JSON.parse(result.body);
 
         expect(response).to.be.an('array');
+    });
+
+    it('verifies /sensors successful single response', async () => {
+        let event = {
+            path: '/sensors',
+            queryStringParameters: {
+                device: 'test',
+                sensor: 'asdf'
+            }
+        };
+        const result = await app.lambdaHandler(event, context)
+
+        expect(result).to.be.an('object');
+        expect(result.statusCode).to.equal(200);
+        expect(result.body).to.be.an('string');
+
+        let response = JSON.parse(result.body);
+
+        expect(response).to.be.an('object');
     });
 
     it('verifies /ingest successful response', async () => {

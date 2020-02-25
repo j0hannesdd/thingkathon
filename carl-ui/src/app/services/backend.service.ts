@@ -4,11 +4,14 @@ import { environment } from '../../environments/environment';
 import { Site } from '../model/site';
 import { Device } from '../model/device';
 import { Sensor } from '../model/sensor';
+import { Task } from '../model/task';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackendService {
+
+    tasks: Task[] = [];
 
     constructor(private http: HttpClient) { }
 
@@ -24,5 +27,13 @@ export class BackendService {
         return this.http.get<Sensor[]>(environment.sensors + deviceId);
     }
 
+    createEvent() {
+        console.log('create event');
+        const a = new Task();
+        a.id='0001';
+        a.name = 'Störung';
+        a.type = 'Erhöhte Temperatur';
+        this.tasks.push(a);
+    }
 
 }
