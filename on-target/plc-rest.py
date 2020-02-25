@@ -47,7 +47,8 @@ def create_data_group(session, sessionID):
                     "udtConnectionPoint.System",
                     "udtConnectionPoint.Measurement",
                     "udtConnectionPoint.LevelControl",
-                    "udtConnectionPoint.PumpControl"
+                    "udtConnectionPoint.PumpControl",
+                    "udtMeld"
 
             ],
             "sessionID": sessionID
@@ -68,7 +69,7 @@ def get_data_group(session, sessionID, groupID):
         base_url=BASE_URL_PLC, 
         groupID=groupID, 
         sessionID=sessionID))
-    #pprint.pprint(r.json())
+    pprint.pprint(r.json())
     print('new data')
     return r.json()['variables']
 
@@ -98,5 +99,11 @@ while 1:
     # push data to aws
     r = requests.post('https://hcazi6f033.execute-api.eu-central-1.amazonaws.com/Prod/ingest', data=json.dumps(plcData))
     print('{} -- {}'.format(r, r.text))
+    
+
+  #r = session.put('{base_url}/groups/{groupID}/?sessionID={sessionID}'.format(
+   #     base_url=BASE_URL_PLC, 
+   #     groupID=groupID, 
+   #   sessionID=sessionID))
     time.sleep(5)
 
