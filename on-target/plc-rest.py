@@ -46,9 +46,20 @@ def create_data_group(session, sessionID):
     groupData = {
             "pathPrefix": "Arp.Plc.Eclr/",
             "paths": [
-                    "udtConnectionPoint.System.Parameter.NameOfStation",
-                    "udtConnectionPoint.System.Parameter.NumberOfPumps",
-                    "udtConnectionPoint.System.Parameter.NumberOfStages"
+                    #"udtConnectionPoint.System.Parameter.NameOfStation",
+                    #"udtConnectionPoint.System.Parameter.NumberOfPumps",
+                    #"udtConnectionPoint.System.Parameter.NumberOfStages",
+                    #"udtConnectionPoint.System.Parameter.ControlScheme",
+                    #"udtConnectionPoint.System.Diagnostic.SysTick",
+                    #"udtConnectionPoint.System.Diagnostic.StationDate",
+                    #"udtConnectionPoint.System.Diagnostic.StationTime",
+                    #"udtConnectionPoint.System.Diagnostic.Uptime",
+                    #"udtConnectionPoint.System.Diagnostic.ComissiningDate",
+                    "udtConnectionPoint.System",
+                    "udtConnectionPoint.Measurement",
+                    "udtConnectionPoint.LevelControl",
+                    "udtConnectionPoint.PumpControl"
+
             ],
             "sessionID": sessionID
     }
@@ -62,6 +73,7 @@ def create_data_group(session, sessionID):
 import pprint
 
 def get_data_group(session, sessionID, groupID):
+    print(sessionID)
     # use group to get data
     r = session.get('{base_url}/groups/{groupID}/?sessionID={sessionID}'.format(
         base_url=BASE_URL_PLC, 
@@ -75,14 +87,15 @@ def get_data_group(session, sessionID, groupID):
 
 
 ######## go for it! ########
-
+#while 1:
 session, sessionID = setup_session()
 keep_alive(session, sessionID)
 groupID = create_data_group(session, sessionID)
-
-plcData = get_data_group(session, sessionID, groupID)
-
-# push data to aws
-r = requests.post('https://hcazi6f033.execute-api.eu-central-1.amazonaws.com/Prod/ingest', data=json.dumps(plcData))
-print('{} -- {}'.format(r, r.text))
+while 1:
+    plcData = get_data_group(session, sessionID, groupID)
+    pprint.pprint(plcData)
+    # push data to aws
+    r = requests.post('https://hcazi6f033.execute-api.eu-central-1.amazonaws.com/Prod/ingest', data=json.dumps(plcData))
+    print('{} -- {}'.format(r, r.text))
+    time.sleep(5)
 
