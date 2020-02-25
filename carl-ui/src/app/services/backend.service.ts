@@ -28,7 +28,8 @@ export class BackendService {
     }
 
     getDevice(id: string) {
-        return this.http.get<Device>(environment.devices + '?device=' + id);
+        const siteId = id.substring(0, id.lastIndexOf('-'));
+        return this.http.get<Device>(environment.devices + '?site=' + siteId + '&device=' + id);
     }
 
     getSensors(deviceId: string) {
