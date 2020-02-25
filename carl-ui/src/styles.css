@@ -4,12 +4,23 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 body {
-    background-color: #f4f4f4;
+    background-color: #2E2E2E;
 }
-
 
 .cui-card {
     margin: 20px;
+    background-color: #3F51B5;
+    color: #d0d0d0;
+}
+
+.cui-card-stoerung {
+    margin: 20px;
+    background-color: #F78181;
+}
+
+.cui-card-wartung {
+    margin: 20px;
+    background-color: #F7BE81;
 }
 
 a.cui-card-wrapper {
@@ -36,6 +47,7 @@ a.cui-card-wrapper {
 .cui-details table {
     border-collapse: separate;
     border-spacing: 20px 2px;
+    margin-bottom: 20px;
 }
 
 /* Material Icons Fonts */

@@ -8,6 +8,11 @@
             <div mat-card-avatar class="example-header-image"></div>
             <mat-card-title>{{site.name}}</mat-card-title>
             <mat-card-subtitle>{{site.type}} - {{site.address}}</mat-card-subtitle>
+            <mat-card-subtitle [ngClass]="{
+                'cui-card-status-ok': site.status=='OK',
+                'cui-card-status-other': site.status != 'OK'&& site.status !='FAULTY',
+                'cui-card-status-faulty': site.status == 'FAULTY' 
+            }">{{site.status}}</mat-card-subtitle>
         </mat-card-header>
     </mat-card>
 </a>
