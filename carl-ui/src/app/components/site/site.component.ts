@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BackendService } from '../../services/backend.service';
+import { Device } from '../../model/device';
 
 @Component({
   selector: 'app-site',

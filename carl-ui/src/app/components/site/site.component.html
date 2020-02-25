@@ -2,6 +2,10 @@
   <span>Anlage</span>
 </mat-toolbar>
 
+<div class="cui-details">
+    
+</div>
+
 <a *ngFor="let device of devices" class="cui-card-wrapper" [routerLink]="['/device/' + device.deviceId]">
     <mat-card class="cui-card">
         <mat-card-header>
