@@ -6,4 +6,5 @@ export class Site {
     position: Position;
     name: string;
     type: string;
+    address: string;
 }

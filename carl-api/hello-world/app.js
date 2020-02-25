@@ -169,7 +169,7 @@ function getDevices(site, device) {
     if (device) {
         return devices[device];
     } else {
-        return toArray(device);
+        return toArray(devices);
     }
 }
 
@@ -194,7 +194,7 @@ function getSensors(device, sensor) {
     if (sensor) {
         return sensors[sensor];
     } else {
-        return toArray(sensor);
+        return toArray(sensors);
     }
 }
 

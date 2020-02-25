@@ -1,0 +1,11 @@
+.cui-card-status-ok{
+    color: chartreuse;
+}
+
+.cui-card-status-other{
+    color: darkorange;
+}
+
+.cui-card-status-faulty{
+    color: crimson;
+}

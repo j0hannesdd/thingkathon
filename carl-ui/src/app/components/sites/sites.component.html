@@ -5,9 +5,14 @@
 <a *ngFor="let site of sites" class="cui-card-wrapper" [routerLink]="['/site/' + site.id]">
     <mat-card class="cui-card">
         <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
+            <div mat-card-avatar class="example-header-image"><mat-icon>home</mat-icon></div>
             <mat-card-title>{{site.name}}</mat-card-title>
             <mat-card-subtitle>{{site.type}} - {{site.address}}</mat-card-subtitle>
+            <mat-card-subtitle [ngClass]="{
+                'cui-card-status-ok': site.status=='OK',
+                'cui-card-status-other': site.status != 'OK'&& site.status !='FAULTY',
+                'cui-card-status-faulty': site.status == 'FAULTY' 
+            }">{{site.status}}</mat-card-subtitle>
         </mat-card-header>
     </mat-card>
 </a>
