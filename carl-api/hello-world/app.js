@@ -79,7 +79,8 @@ function getSites(site) {
             address: 'Kritzenhof, Hauptstraße 3',
             name: 'Kritzendorf',
             type: 'PumpHouse',
-            fillLevel: 42
+            fillLevel: 42,
+            pumpCount: 2
         },
         '008': {
             id: '008',
@@ -88,7 +89,8 @@ function getSites(site) {
             address: 'Wasserhan-Miedenhain, Am Werk 1a',
             name: 'Dresden 2',
             type: 'Storage',
-            fillLevel: 23
+            fillLevel: 23,
+            pumpCount: 4
         },
         '009-09123-123-1231345': {
             id: '009-09123-123-1231345',
@@ -97,14 +99,14 @@ function getSites(site) {
             address: 'Wasserhan-Miedenhain, Am Werk 1b',
             name: 'Leipzig',
             type: 'Storage',
-            fillLevel: 78
+            fillLevel: 78,
+            pumpCount: 3
         }
     }
 
     // add latest "real" data
-    let fillLevelMax = realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].Diagnostic.GreatestValue
-    let fillLevelCurrent = realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].ProcessValue
-
+    //let fillLevelMax = realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].Diagnostic.GreatestValue
+    //let fillLevelCurrent = realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].ProcessValue
     sites.real = {
         id: 'real',
         status: 'FAULTY',
@@ -112,7 +114,8 @@ function getSites(site) {
         address: 'Dresden, Riesaer Str. 5',
         name: realData[realData.length - 1]['udtConnectionPoint.System'].Parameter.NameOfStation,
         type: 'PumpHouse',
-        fillLevel: fillLevelCurrent / fillLevelMax
+        fillLevel: Math.floor( realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].Diagnostic.RawValue_Percent ),
+        pumpCount: realData[realData.length - 1]['udtConnectionPoint.System'].Parameter.NumberOfPumps
     }
 
     if (site) {
