@@ -56,4 +56,27 @@ describe('Carl API', function () {
 
         expect(response).to.be.an('array');
     });
+
+    it('verifies /ingest successful response', async () => {
+        let event = {
+            path: '/ingest',
+            body: JSON.stringify({
+                some: "data",
+                withArray: [1,2,3,4],
+                andMore: {
+                    complex: 'stuff',
+                    right: true
+                }
+            })
+        };
+        const result = await app.lambdaHandler(event, context)
+
+        expect(result).to.be.an('object');
+        expect(result.statusCode).to.equal(200);
+        expect(result.body).to.be.an('string');
+
+        let response = JSON.parse(result.body);
+
+        expect(response).to.be.an('object');
+    });
 });

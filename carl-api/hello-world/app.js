@@ -1,6 +1,25 @@
-// const axios = require('axios')
-// const url = 'http://checkip.amazonaws.com/';
-let response;
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3();
+
+let realData = [];
+
+// init code, run whenever the lambda is loaded
+function init() {
+    // read latest real data from s3
+    s3.getObject({
+        Bucket: 'team-one-carl-data',
+        Key: 'data.json'
+    }, function(err, data) {
+        if (err) {
+            console.error("Failed to read data from S3!", err);
+            return;
+        }
+        console.log("got real data from s3: ", data.Body.toString())
+        realData = JSON.parse(data.Body.toString());
+    });
+}
+
+init();
 
 /**
  *
@@ -139,5 +158,23 @@ function getSensors(device) {
 }
 
 function postData(data) {
+    if (typeof data === 'string') {
+        data = JSON.parse(data);
+    }
+    // append new data
+    realData.push(data);
 
+    // store data in S3 bucket.
+    s3.putObject({
+        Bucket: 'team-one-carl-data',
+        Key: 'data.json',
+        Body: JSON.stringify(data)
+    }, function(err, response) {
+        if(err) {
+            console.error("Failed to save data in s3!", err);
+        }
+    })
+    return {
+        ack: true
+    };
 }
