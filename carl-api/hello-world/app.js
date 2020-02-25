@@ -40,7 +40,7 @@ exports.lambdaHandler = async (event, context) => {
         case '/sites': responseData = getSites(); break;
         case '/devices': responseData = getDevices(event.queryStringParameters.site); break;
         case '/sensors': responseData = getSensors(event.queryStringParameters.device); break;
-        case '/ingest': responseData = postData(event.body); break;
+        case '/ingest': responseData = await postData(event.body); break;
         default: responseData = {
             statusCode: 404,
             body: 'Unknown endpoint.'
@@ -163,7 +163,7 @@ function getSensors(device) {
     ];
 }
 
-function postData(data) {
+async function postData(data) {
     console.log("Retrieved Data", data)
     if (typeof data === 'string') {
         data = JSON.parse(data);
@@ -171,22 +171,35 @@ function postData(data) {
 
     // (de)? normalize data
     parsedData = {}
-
+    data.forEach((entry)=>{
+        parsedData[entry.path] = entry.value;
+    });
+    console.log("Parsed Data", parsedData)
 
     // append new data
-    realData.push(data);
+    realData.push(parsedData);
 
-    // store data in S3 bucket.
-    s3.putObject({
-        Bucket: 'team-one-carl-data',
-        Key: 'data.json',
-        Body: JSON.stringify(data)
-    }, function(err, response) {
-        if(err) {
-            console.error("Failed to save data in s3!", err);
-        }
-    })
-    return {
-        ack: true
-    };
+    return new Promise((resolve, reject) => {
+        // store data in S3 bucket.
+        s3.putObject({
+            Bucket: 'team-one-carl-data',
+            Key: 'data.json',
+            Body: JSON.stringify(realData)
+        }, function(err, response) {
+            if(err) {
+                console.error("Failed to save data in s3!", err);
+                resolve({
+                    statusCode: 500,
+                    body: {
+                        msg: "Failed to save data in s3!",
+                        reason: err
+                    }
+                });
+            } else {
+                resolve({
+                    ack: true
+                });
+            }
+        })
+    });
 }
