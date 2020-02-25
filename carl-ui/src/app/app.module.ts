@@ -5,11 +5,13 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table'; 
+import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AgmCoreModule } from '@agm/core';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +25,7 @@ import { TaskComponent } from './components/task/task.component';
 import { MapComponent } from './components/map/map.component';
 import { SiteComponent } from './components/site/site.component';
 import { SitesComponent } from './components/sites/sites.component';
+import { EventDialogComponent } from './components/event-dialog/event-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,8 +38,10 @@ import { SitesComponent } from './components/sites/sites.component';
     TaskComponent,
     MapComponent,
     SiteComponent,
-    SitesComponent
+    SitesComponent,
+    EventDialogComponent
   ],
+  entryComponents: [EventDialogComponent],
   imports: [
     AgmCoreModule.forRoot({
         // please get your own API key here:
@@ -49,9 +54,11 @@ import { SitesComponent } from './components/sites/sites.component';
     HttpClientModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatIconModule,
     MatTabsModule,
-    MatToolbarModule
+    MatToolbarModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

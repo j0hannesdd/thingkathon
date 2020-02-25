@@ -3,7 +3,9 @@
 const app = require('../../app.js');
 const chai = require('chai');
 const expect = chai.expect;
-var context;
+var context = {
+    test: true
+};
 
 describe('Carl API', function () {
     it('verifies /sites successful response', async () => {
@@ -24,7 +26,7 @@ describe('Carl API', function () {
     it('verifies /sites successful single response', async () => {
         let event = {
             path: '/sites',
-            queryStringParameters: {site: '009'}
+            queryStringParameters: {site: '007'}
         };
         const result = await app.lambdaHandler(event, context)
 
@@ -59,8 +61,8 @@ describe('Carl API', function () {
         let event = {
             path: '/devices',
             queryStringParameters: {
-                site: 'test',
-                device: 'test'
+                site: '007',
+                device: '007-001'
             }
         };
         const result = await app.lambdaHandler(event, context)
@@ -78,7 +80,7 @@ describe('Carl API', function () {
         let event = {
             path: '/sensors',
             queryStringParameters: {
-                device: 'test',
+                device: '007-001',
             }
         };
         const result = await app.lambdaHandler(event, context)
@@ -96,8 +98,8 @@ describe('Carl API', function () {
         let event = {
             path: '/sensors',
             queryStringParameters: {
-                device: 'test',
-                sensor: 'asdf'
+                device: '007-001',
+                sensor: '007-001-001'
             }
         };
         const result = await app.lambdaHandler(event, context)

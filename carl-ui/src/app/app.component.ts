@@ -1,5 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { BackendService } from './services/backend.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EventDialogComponent } from './components/event-dialog/event-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,7 @@ export class AppComponent {
 
   title = 'carl-ui';
 
-  constructor(public service: BackendService) {
+  constructor(public service: BackendService, public dialog: MatDialog) {
 
   }
 
@@ -19,6 +21,17 @@ export class AppComponent {
     if(event.keyCode == KEY_CODE.E){
       console.log(event);
       this.service.createEvent();
+
+      const dialogRef = this.dialog.open(EventDialogComponent, {
+          width: '250px',
+          height: '300px',
+          data: {name: ''}
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed');
+          // this.animal = result;
+        });
     }
   }
 
