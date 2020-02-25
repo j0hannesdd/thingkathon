@@ -1,3 +1,6 @@
+import sys
+sys.path.append('modules')
+
 import requests
 import json
 
