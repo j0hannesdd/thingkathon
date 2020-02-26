@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  <span>Anlage {{site.name}}</span>
+  <button mat-button backButton><mat-icon>arrow_back</mat-icon></button> <span>Anlage {{site.name}}</span>
 </mat-toolbar>
 
 <div class="cui-details">
@@ -13,12 +13,37 @@
 <a *ngFor="let device of devices" class="cui-card-wrapper" [routerLink]="['/device/' + device.deviceId]">
     <mat-card class="cui-card">
         <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
+            <div mat-card-avatar class="example-header-image"><img width="45" src="assets/img/turbo.png"></div>
             <mat-card-title>{{device.name}}</mat-card-title>
             <mat-card-subtitle>{{device.type}}</mat-card-subtitle>
+            <mat-card-subtitle [ngSwitch]="device.status">
+                <div *ngSwitchCase="'OFF'">
+                    <div style="color: grey;">Aus</div>
+                </div>
+                <div *ngSwitchCase="'OK'">
+                    <div style="color: chartreuse;">Aktiv</div>
+                </div>
+                <div *ngSwitchCase="'WARNING'">
+                    <div style="color: darkorange;">Warnung</div>
+                </div>
+                <div *ngSwitchCase="'FAULTY'">
+                    <div style="color: crimson;">Fehler!</div>
+                </div>
+            </mat-card-subtitle>
         </mat-card-header>
     </mat-card>
 </a>
+<mat-card class="cui-card">
+    <mat-card-header>
+        <div mat-card-avatar class="example-header-image">
+            <mat-icon>show_chart</mat-icon>
+        </div>
+        <mat-card-title>Füllstand</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <canvas #heightChart width="400" height="200"></canvas>
+    </mat-card-content>
+</mat-card>
 
 <!--<a class="cui-card-wrapper" routerLink="/device/2365">
     <mat-card class="cui-card">

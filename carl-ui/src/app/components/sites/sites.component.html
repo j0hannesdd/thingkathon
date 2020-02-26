@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-    <span>Anlagen</span>
+    <button mat-button backButton><mat-icon>arrow_back</mat-icon></button> <span>Anlagen</span>
 </mat-toolbar>
 
 <a *ngFor="let site of sites" class="cui-card-wrapper" [routerLink]="['/site/' + site.id]">
@@ -9,10 +9,11 @@
                 <mat-icon>home</mat-icon>
             </div>
             <mat-card-title style="margin-left: 12px;">{{site.name}}</mat-card-title>
-            <mat-card-subtitle style="margin-left: 12px;" [ngClass]="{
+            <mat-card-subtitle style="margin-left: 12px;">{{site.address}}</mat-card-subtitle>
+            <mat-card-subtitle style="margin-left: 12px; margin-bottom: 0;" [ngClass]="{
                 'cui-card-status-ok': site.status=='OK',
                 'cui-card-status-other': site.status != 'OK'&& site.status !='FAULTY',
-                'cui-card-status-faulty': site.status == 'FAULTY' 
+                'cui-card-status-faulty': site.status == 'FAULTY'
             }">{{site.status}}</mat-card-subtitle>
             <div class="card-right">
                 <div *ngFor="let device of site.devices">
@@ -29,7 +30,7 @@
                         <p *ngSwitchCase="'FAULTY'" class="cui-card-pump-status-line">
                             <mat-icon class="cui-card-pump-status" style="color: crimson;">fiber_manual_record</mat-icon>
                         </p>
-                        
+
                     </div>
                 </div>
             </div>

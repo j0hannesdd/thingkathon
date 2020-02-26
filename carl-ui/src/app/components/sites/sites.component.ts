@@ -10,7 +10,7 @@ import { Site } from '../../model/site';
 export class SitesComponent implements OnInit {
 
     sites: Site[] = [];
-
+  refreshInterval: number;
   constructor(private service: BackendService) { }
 
   ngOnInit() {
@@ -18,6 +18,15 @@ export class SitesComponent implements OnInit {
           this.sites = sites;
           console.log(sites);
       });
+      this.refreshInterval = window.setInterval(()=>{
+        this.service.getSites().subscribe((sites: Site[]) => {
+          this.sites = sites;
+          console.log(sites);
+      });
+      }, 2000);
   }
 
+  ngOnDestroy() {
+    window.clearInterval(this.refreshInterval);
+  }
 }

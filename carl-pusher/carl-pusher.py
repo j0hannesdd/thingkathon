@@ -24,7 +24,8 @@ def setup_session():
     session = requests.Session()
     session.verify = False
 
-    stationData = "stationID=42"
+    #stationData = "stationID=42"
+    stationData = "stationID=1"
 
     # init session
     r = session.post('{base_url}/sessions'.format(base_url=BASE_URL_PLC), data=stationData)
@@ -51,7 +52,7 @@ def create_data_group(session, sessionID):
                     "udtConnectionPoint.Measurement",
                     "udtConnectionPoint.LevelControl",
                     "udtConnectionPoint.PumpControl",
-                    "udtMeld"
+#                    "udtMeld"
 
             ],
             "sessionID": sessionID
@@ -96,17 +97,32 @@ class keep_alive_thread(threading.Thread):
 session, sessionID = setup_session()
 keep_alive_thread(2,session,sessionID)
 groupID = create_data_group(session, sessionID)
-while 1:
-    plcData = get_data_group(session, sessionID, groupID)
-    #pprint.pprint(plcData)
-    # push data to aws
-    r = requests.post('https://hcazi6f033.execute-api.eu-central-1.amazonaws.com/Prod/ingest', data=json.dumps(plcData))
-    print('upload data: {}'.format(r.text))
-    
 
-  #r = session.put('{base_url}/groups/{groupID}/?sessionID={sessionID}'.format(
-   #     base_url=BASE_URL_PLC, 
-   #     groupID=groupID, 
-   #   sessionID=sessionID))
-    time.sleep(3)
+
+plcData = get_data_group(session, sessionID, groupID)
+pprint.pprint(plcData)
+
+
+let more_data = []
+more_data.push(plcData)
+more_data.push(plcData)
+
+r = requests.post('https://hcazi6f033.execute-api.eu-central-1.amazonaws.com/Prod/ingest', data=json.dumps(plcData))
+print('upload data: {}'.format(r.text))
+
+
+#
+#while 1:
+#    plcData = get_data_group(session, sessionID, groupID)
+#    #pprint.pprint(plcData)
+#    # push data to aws
+#    r = requests.post('https://hcazi6f033.execute-api.eu-central-1.amazonaws.com/Prod/ingest', data=json.dumps(plcData))
+#    print('upload data: {}'.format(r.text))
+#    
+#
+#  #r = session.put('{base_url}/groups/{groupID}/?sessionID={sessionID}'.format(
+#   #     base_url=BASE_URL_PLC, 
+#   #     groupID=groupID, 
+#   #   sessionID=sessionID))
+#    time.sleep(3)
 

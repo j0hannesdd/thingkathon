@@ -49,7 +49,7 @@ exports.lambdaHandler = async (event, context) => {
                 }
             }
         } else {
-            realData = {
+            realData = [{
                 "udtConnectionPoint.System.Parameter.NameOfStation": "TestStation",
                 "udtConnectionPoint.PumpControl": {
                     Pumps: []
@@ -66,7 +66,7 @@ exports.lambdaHandler = async (event, context) => {
                         }
                     }
                 ]
-            };
+            }];
         }
     }
     console.log("Request: ", { path: event.path, params: event.queryStringParameters });
@@ -145,33 +145,36 @@ function getSites(site) {
     // add latest "real" data
     //let fillLevelMax = realData['udtConnectionPoint.Measurement'][0].Diagnostic.GreatestValue
     //let fillLevelCurrent = realData['udtConnectionPoint.Measurement'][0].ProcessValue
-    let deviceList = []
-    realData['udtConnectionPoint.PumpControl'].Pumps.forEach(element => {
-        // default state is WARNING
-        let status = 'WARNING'
+    realData.forEach((realSiteData, i) => {
+    
+        let deviceList = []
+        realSiteData['udtConnectionPoint.PumpControl'].Pumps.forEach(element => {
+            // default state is WARNING
+            let status = 'WARNING'
 
-        if (element.Error == true) {
-            status = 'FAULTY'
-        } else if (element.Error == false && element.Warning == false && element.Ready == true) {
-            status = 'OK'
-        } else if (element.Error == false && element.Running == false && element.Ready == true) {
-            status = 'OFF'
+            if (element.Error == true) {
+                status = 'FAULTY'
+            } else if (element.Error == false && element.Warning == false && element.Ready == true) {
+                status = 'OK'
+            } else if (element.Error == false && element.Running == false && element.Ready == true) {
+                status = 'OFF'
+            }
+
+            deviceList.push({ status })
+        });
+
+        sites['real' + i] = {
+            id: 'real',
+            status: 'FAULTY',
+            position: { lon: 51.082622, lat: 13.725815 },
+            address: 'Dresden, Riesaer Str. 5',
+            name: realSiteData['udtConnectionPoint.System'].Parameter.NameOfStation,
+            type: 'PumpHouse',
+            fillLevel: Math.floor(realSiteData['udtConnectionPoint.Measurement'][0].Diagnostic.RawValue_Percent),
+            //pumpCount: realSiteData['udtConnectionPoint.System'].Parameter.NumberOfPumps
+            devices: deviceList
         }
-
-        deviceList.push({ status })
     });
-
-    sites.real = {
-        id: 'real',
-        status: 'FAULTY',
-        position: { lon: 51.082622, lat: 13.725815 },
-        address: 'Dresden, Riesaer Str. 5',
-        name: realData['udtConnectionPoint.System'].Parameter.NameOfStation,
-        type: 'PumpHouse',
-        fillLevel: Math.floor(realData['udtConnectionPoint.Measurement'][0].Diagnostic.RawValue_Percent),
-        //pumpCount: realData['udtConnectionPoint.System'].Parameter.NumberOfPumps
-        devices: deviceList
-    }
 
     if (site) {
         return sites[site]
@@ -193,12 +196,12 @@ function getDevices(site, device) {
             lastMaintained: new Date(Date.now() - 1000 * 60 * 60 * 24 * 40),
             nextMaintanance: new Date(Date.now() + 1000 * 60 * 60 * 24 * 10),
         },
-        name: 'Input pump one',
+        name: 'Zulaufpumpe 1',
     };
     devices[site + '-002'] = {
         siteId: site,
         deviceId: site + '-002',
-        status: 'OK',
+        status: 'OFF',
         active: false,
         type: 'LEWA Membrandosierpumpe',
         alerts: [],
@@ -206,25 +209,43 @@ function getDevices(site, device) {
             lastMaintained: new Date(Date.now() - 1000 * 60 * 60 * 24 * 36),
             nextMaintanance: new Date(Date.now() + 1000 * 60 * 60 * 24 * 14),
         },
-        name: 'Input pump two',
+        name: 'Zulaufpumpe 1 (Ersatz)',
     };
     devices[site + '-003'] = {
         siteId: site,
         deviceId: site + '-003',
-        status: 'WARNING',
+        status: 'OK',
         active: false,
         type: 'LEWA Membrandosierpumpe',
         alerts: [
             {
                 type: 'WARNING',
-                msg: 'Wartung fällig!'
+                msg: 'Wartung fällig.'
             }
         ],
         maintenance: {
             lastMaintained: new Date(Date.now() - 1000 * 60 * 60 * 24 * 200),
             nextMaintanance: new Date(Date.now() - 1000 * 60 * 60 * 24 * 12),
         },
-        name: 'Output pump one',
+        name: 'Zulaufpumpe 2',
+    };
+    devices[site + '-004'] = {
+        siteId: site,
+        deviceId: site + '-004',
+        status: 'FAULTY',
+        active: false,
+        type: 'LEWA Membrandosierpumpe',
+        alerts: [
+            {
+                type: 'FAULTY',
+                msg: 'Pumpe reagiert nicht!'
+            }
+        ],
+        maintenance: {
+            lastMaintained: new Date(Date.now() - 1000 * 60 * 60 * 24 * 200),
+            nextMaintanance: new Date(Date.now() - 1000 * 60 * 60 * 24 * 12),
+        },
+        name: 'Zulaufpumpe 3',
     };
     if (device) {
         return devices[device];
@@ -265,9 +286,13 @@ async function postData(data, test) {
     }
 
     // (de)? normalize data
-    parsedData = {}
-    data.forEach((entry) => {
-        parsedData[entry.path] = entry.value;
+    parsedData = []
+    data.forEach((stationData) => {
+        let innerParsedData = {}
+        stationData.forEach((entry) => {
+            innerParsedData[entry.path] = entry.value;
+        });
+        parsedData.push(innerParsedData)
     });
     console.log("Parsed Data", parsedData)
 
