@@ -116,11 +116,11 @@ describe('Carl API', function () {
     it('verifies /ingest successful response', async () => {
         let event = {
             path: '/ingest',
-            body: JSON.stringify([
+            body: JSON.stringify([[
                 {'path': 'udtConnectionPoint.System.Parameter.NameOfStation', 'value': 'PumpControl'},
                 {'path': 'udtConnectionPoint.System.Parameter.NumberOfPumps', 'value': 4},
                 {'path': 'udtConnectionPoint.System.Parameter.NumberOfStages', 'value': 2}
-            ])
+            ]])
         };
         const result = await app.lambdaHandler(event, context)
 
