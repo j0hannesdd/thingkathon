@@ -8,8 +8,8 @@
             <div mat-card-avatar class="example-header-image">
                 <mat-icon>home</mat-icon>
             </div>
-            <mat-card-title>{{site.name}}</mat-card-title>
-            <mat-card-subtitle [ngClass]="{
+            <mat-card-title style="margin-left: 12px;">{{site.name}}</mat-card-title>
+            <mat-card-subtitle style="margin-left: 12px;" [ngClass]="{
                 'cui-card-status-ok': site.status=='OK',
                 'cui-card-status-other': site.status != 'OK'&& site.status !='FAULTY',
                 'cui-card-status-faulty': site.status == 'FAULTY' 
@@ -17,18 +17,18 @@
             <div class="card-right">
                 <div *ngFor="let device of site.devices">
                     <div [ngSwitch]="device.status">
-                        <div *ngSwitchCase="'OFF'">
-                            <mat-icon style="color: grey; font-size:medium;">fiber_manual_record</mat-icon>
-                        </div>
-                        <div *ngSwitchCase="'OK'">
-                            <mat-icon style="color: chartreuse; font-size:medium;">fiber_manual_record</mat-icon>
-                        </div>
-                        <div *ngSwitchCase="'WARNING'">
-                            <mat-icon style="color: darkorange; font-size:medium;">fiber_manual_record</mat-icon>
-                        </div>
-                        <div *ngSwitchCase="'FAULTY'">
-                            <mat-icon style="color: crimson; font-size:medium;">fiber_manual_record</mat-icon>
-                        </div>
+                        <p *ngSwitchCase="'OFF'" class="cui-card-pump-status-line">
+                            <mat-icon class="cui-card-pump-status" style="color: grey;">fiber_manual_record</mat-icon>
+                        </p>
+                        <p *ngSwitchCase="'OK'" class="cui-card-pump-status-line">
+                            <mat-icon class="cui-card-pump-status" style="color: chartreuse;">fiber_manual_record</mat-icon>
+                        </p>
+                        <p *ngSwitchCase="'WARNING'" class="cui-card-pump-status-line">
+                            <mat-icon class="cui-card-pump-status" style="color: darkorange;">fiber_manual_record</mat-icon>
+                        </p>
+                        <p *ngSwitchCase="'FAULTY'" class="cui-card-pump-status-line">
+                            <mat-icon class="cui-card-pump-status" style="color: crimson;">fiber_manual_record</mat-icon>
+                        </p>
                         
                     </div>
                 </div>

@@ -10,10 +10,23 @@
     color: crimson;
 }
 
+.cui-card-pump-status {
+    font-size: 16px;
+    height: auto;
+    width: auto;
+}
+
 .card-right{
     position: absolute;
     top:0;
     right:0;
+    padding-top: 10px;
+}
+
+.cui-card-pump-status-line {
+    line-height: 1;
+    margin: 0;
+    margin-right: 10px;
 }
 
 .cui-card-left-bg {
