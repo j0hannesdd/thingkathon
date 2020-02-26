@@ -63,14 +63,14 @@ def create_data_group(session, sessionID):
 import pprint
 
 def get_data_group(session, sessionID, groupID):
-    print(sessionID)
+    #print(sessionID)
     # use group to get data
     r = session.get('{base_url}/groups/{groupID}/?sessionID={sessionID}'.format(
         base_url=BASE_URL_PLC, 
         groupID=groupID, 
         sessionID=sessionID))
-    pprint.pprint(r.json())
-    print('new data')
+    #pprint.pprint(r.json())
+    print('recived new data')
     return r.json()['variables']
 
 
@@ -98,7 +98,7 @@ while 1:
     #pprint.pprint(plcData)
     # push data to aws
     r = requests.post('https://hcazi6f033.execute-api.eu-central-1.amazonaws.com/Prod/ingest', data=json.dumps(plcData))
-    print('{} -- {}'.format(r, r.text))
+    print('upload data: {}'.format(r.text))
     
 
   #r = session.put('{base_url}/groups/{groupID}/?sessionID={sessionID}'.format(
