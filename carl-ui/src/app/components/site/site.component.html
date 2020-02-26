@@ -13,7 +13,7 @@
 <a *ngFor="let device of devices" class="cui-card-wrapper" [routerLink]="['/device/' + device.deviceId]">
     <mat-card class="cui-card">
         <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
+            <div mat-card-avatar class="example-header-image"><img width="45" src="assets/img/turbo.png"></div>
             <mat-card-title>{{device.name}}</mat-card-title>
             <mat-card-subtitle>{{device.type}}</mat-card-subtitle>
         </mat-card-header>
