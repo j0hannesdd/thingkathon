@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 import sys
 sys.path.append('modules')
 
@@ -105,5 +108,5 @@ while 1:
    #     base_url=BASE_URL_PLC, 
    #     groupID=groupID, 
    #   sessionID=sessionID))
-    time.sleep(5)
+    time.sleep(3)
 
