@@ -9,7 +9,8 @@
                 <mat-icon>home</mat-icon>
             </div>
             <mat-card-title style="margin-left: 12px;">{{site.name}}</mat-card-title>
-            <mat-card-subtitle style="margin-left: 12px;" [ngClass]="{
+            <mat-card-subtitle style="margin-left: 12px;">{{site.address}}</mat-card-subtitle>
+            <mat-card-subtitle style="margin-left: 12px; margin-bottom: 0;" [ngClass]="{
                 'cui-card-status-ok': site.status=='OK',
                 'cui-card-status-other': site.status != 'OK'&& site.status !='FAULTY',
                 'cui-card-status-faulty': site.status == 'FAULTY' 
