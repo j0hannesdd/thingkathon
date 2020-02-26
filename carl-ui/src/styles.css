@@ -13,16 +13,6 @@ body {
     color: #d0d0d0;
 }
 
-.cui-card-stoerung {
-    margin: 20px;
-    background-color: #F78181;
-}
-
-.cui-card-wartung {
-    margin: 20px;
-    background-color: #F7BE81;
-}
-
 a.cui-card-wrapper {
     text-decoration: none currentcolor solid;
 }
