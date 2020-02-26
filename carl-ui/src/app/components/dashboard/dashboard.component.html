@@ -47,7 +47,7 @@
             </div>
         </div>-->
         <table class="cui-heat-table">
-            <tr *ngFor="let row of heatData" class="">
+            <tr *ngFor="let row of service.heatData" class="">
                 <td *ngFor="let n of row" class="" [ngClass]="{
                     'cui-heat-g9': n >= 0.88 && n <= 1.0,
                     'cui-heat-g8': n >= 0.77 && n < 0.88,

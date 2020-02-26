@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BackendService } from '../../services/backend.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,19 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-    heatData: number[][] = [
-        [1.0,1.0,1.0,1.0,1.0, 1.0,0.8,0.8,1.0,1.0],
-        [1.0,1.0,1.0,1.0,1.0, 1.0,1.0,1.0,1.0,1.0],
-        [1.0,1.0,1.0,1.0,1.0, 0.5,0.22,1.0,1.0,1.0],
-        [1.0,1.0,1.0,1.0,1.0, 1.0,0.12,1.0,1.0,1.0],
-        [0.67,1.0,1.0,0.5,1.0, 1.0,0.33,0.55,1.0,0.0],
-        [1.0,1.0,1.0,1.0,1.0, 1.0,1.0,1.0,1.0,1.0],
-        [1.0,1.0,1.0,1.0,1.0, 1.0,1.0,1.0,1.0,1.0]
-    ];
-
     interval: any;
 
-  constructor() { }
+  constructor(public service: BackendService) { }
 
   ngOnInit() {
       this.interval = setInterval(() => {
@@ -27,7 +18,7 @@ export class DashboardComponent implements OnInit {
           if(value < 0.33) return;
           const row = this.getRndInteger(0, 6);
           const col = this.getRndInteger(0, 10);
-          if(this.heatData[row][col] >= 0.33) this.heatData[row][col] = value;
+          if(this.service.heatData[row][col] >= 0.33) this.service.heatData[row][col] = value;
       }, 1000);
   }
 
@@ -36,7 +27,7 @@ export class DashboardComponent implements OnInit {
     }
 
   ngOnDestroy() {
-      clearInterval(this.invteral);
+      clearInterval(this.interval);
   }
 
 }
