@@ -28,6 +28,7 @@ import { MapComponent } from './components/map/map.component';
 import { SiteComponent } from './components/site/site.component';
 import { SitesComponent } from './components/sites/sites.component';
 import { EventDialogComponent } from './components/event-dialog/event-dialog.component';
+import { BackButtonDirective } from './directives/back-button.directive';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { EventDialogComponent } from './components/event-dialog/event-dialog.com
     MapComponent,
     SiteComponent,
     SitesComponent,
-    EventDialogComponent
+    EventDialogComponent,
+    BackButtonDirective
   ],
   entryComponents: [EventDialogComponent],
   imports: [
