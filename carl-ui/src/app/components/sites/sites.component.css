@@ -9,3 +9,9 @@
 .cui-card-status-faulty{
     color: crimson;
 }
+
+.card-right{
+    position: absolute;
+    top:0;
+    right:0;
+}
