@@ -5,7 +5,7 @@ let realData = null;
 
 // init code, run whenever the lambda is loaded
 async function init() {
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
         // read latest real data from s3
         s3.getObject({
             Bucket: 'team-one-carl-data',
@@ -13,10 +13,11 @@ async function init() {
         }, function (err, data) {
             if (err) {
                 console.error("Failed to read data from S3!", err);
-                return;
+                reject(err)
             }
             console.log("got real data from s3: ", data.Body.toString())
             realData = JSON.parse(data.Body.toString());
+            resolve();
         });
     });
 }
@@ -35,12 +36,37 @@ async function init() {
  */
 exports.lambdaHandler = async (event, context) => {
     if (!realData) {
-        if(!context.test) {
-            await init();
+        if (!context.test) {
+            try {
+                await init();
+            } catch(e) {
+                return {
+                    statusCode: 500,
+                    body: JSON.stringify({
+                        msg: "Failed to inti \"database connection\".",
+                        reason: e
+                    })
+                }
+            }
         } else {
-            realData = [{
-                "udtConnectionPoint.System.Parameter.NameOfStation": "TestStation"
-            }];
+            realData = {
+                "udtConnectionPoint.System.Parameter.NameOfStation": "TestStation",
+                "udtConnectionPoint.PumpControl": {
+                    Pumps: []
+                },
+                "udtConnectionPoint.System": {
+                    Parameter: {
+                        NameOfStation: ""
+                    }
+                },
+                "udtConnectionPoint.Measurement": [
+                    {
+                        Diagnostic: {
+                            RawValue_Percent: 32.2
+                        }
+                    }
+                ]
+            };
         }
     }
     console.log("Request: ", { path: event.path, params: event.queryStringParameters });
@@ -81,8 +107,8 @@ function getSites(site) {
             type: 'PumpHouse',
             fillLevel: 42,
             devices: [
-                {status: 'OFF'},
-                {status: 'OK'}
+                { status: 'OFF' },
+                { status: 'OK' }
             ]
         },
         '008': {
@@ -94,10 +120,10 @@ function getSites(site) {
             type: 'Storage',
             fillLevel: 23,
             devices: [
-                {status: 'OK'},
-                {status: 'WARNING'},
-                {status: 'OFF'},
-                {status: 'OK'}
+                { status: 'OK' },
+                { status: 'WARNING' },
+                { status: 'OFF' },
+                { status: 'OK' }
             ]
         },
         '009-09123-123-1231345': {
@@ -109,22 +135,21 @@ function getSites(site) {
             type: 'Storage',
             fillLevel: 78,
             devices: [
-                {status: 'OK'},
-                {status: 'FAULTY'},
-                {status: 'OK'}
+                { status: 'OK' },
+                { status: 'FAULTY' },
+                { status: 'OK' }
             ]
         }
     }
 
     // add latest "real" data
-    //let fillLevelMax = realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].Diagnostic.GreatestValue
-    //let fillLevelCurrent = realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].ProcessValue
+    //let fillLevelMax = realData['udtConnectionPoint.Measurement'][0].Diagnostic.GreatestValue
+    //let fillLevelCurrent = realData['udtConnectionPoint.Measurement'][0].ProcessValue
     let deviceList = []
-    
-   realData[realData.length - 1]['udtConnectionPoint.PumpControl'].Pumps.forEach(element => {
+    realData['udtConnectionPoint.PumpControl'].Pumps.forEach(element => {
         // default state is WARNING
         let status = 'WARNING'
- 
+
         if (element.Error == true) {
             status = 'FAULTY'
         } else if (element.Error == false && element.Warning == false && element.Ready == true) {
@@ -133,18 +158,18 @@ function getSites(site) {
             status = 'OFF'
         }
 
-       deviceList.push({status})
-    }); 
+        deviceList.push({ status })
+    });
 
     sites.real = {
         id: 'real',
         status: 'FAULTY',
         position: { lon: 51.082622, lat: 13.725815 },
         address: 'Dresden, Riesaer Str. 5',
-        name: realData[realData.length - 1]['udtConnectionPoint.System'].Parameter.NameOfStation,
+        name: realData['udtConnectionPoint.System'].Parameter.NameOfStation,
         type: 'PumpHouse',
-        fillLevel: Math.floor( realData[realData.length - 1]['udtConnectionPoint.Measurement'][0].Diagnostic.RawValue_Percent ),
-        //pumpCount: realData[realData.length - 1]['udtConnectionPoint.System'].Parameter.NumberOfPumps
+        fillLevel: Math.floor(realData['udtConnectionPoint.Measurement'][0].Diagnostic.RawValue_Percent),
+        //pumpCount: realData['udtConnectionPoint.System'].Parameter.NumberOfPumps
         devices: deviceList
     }
 
@@ -246,13 +271,13 @@ async function postData(data, test) {
     });
     console.log("Parsed Data", parsedData)
 
-    if(test) {
+    if (test) {
         return {
-            ack:true
+            ack: true
         };
     }
     // append new data
-    realData.push(parsedData);
+    realData = parsedData;
 
     return new Promise((resolve, reject) => {
         // store data in S3 bucket.
