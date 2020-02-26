@@ -1,0 +1,40 @@
+.cui-heat-cell {
+    display: inline-block;
+    width: 10%;
+    /*background-color: white;*/
+}
+
+.cui-heat-point {
+    display: block;
+    background-color: white;
+    /*width: 10px;*/
+    height: 10px;
+    /*border-radius: 50%;*/
+    margin: 0 auto;
+    /*border: 1px solid #555;*/
+}
+
+.cui-heat-table {
+    width: 100%;
+    height: 200px;
+}
+
+.cui-heat-table table,
+.cui-heat-table tr,
+.cui-heat-table th,
+.cui-heat-table td {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0px;
+  padding: 0px;
+}
+
+.cui-heat-g9 {background-color: #8BC34A;}
+.cui-heat-g8 {background-color: #4CAF50;}
+.cui-heat-g7 {background-color: #2e7d32;}
+.cui-heat-y6 {background-color: #FFEB3B;}
+.cui-heat-y5 {background-color: #FFC107;}
+.cui-heat-y4 {background-color: #FF9800;}
+.cui-heat-r3 {background-color: #ef5350;}
+.cui-heat-r2 {background-color: #F44336;}
+.cui-heat-r1 {background-color: #D32F2F;}

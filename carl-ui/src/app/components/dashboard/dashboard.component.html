@@ -34,6 +34,35 @@
     </mat-card>
 </a>
 
+<a class="cui-card-wrapper" routerLink="/map">
+    <mat-card class="cui-card">
+        <!--<div *ngFor="let row of heatData" class="cui-heat-row">
+            <div *ngFor="let n of row" class="cui-heat-cell">
+                <div class="cui-heat-point" [ngClass]="{
+                    'cui-heat-green': n >= 0.66 && n <= 1.0,
+                    'cui-heat-yellow': n >= 0.33 && n < 0.66,
+                    'cui-heat-red': n >= 0.00 && n < 0.33
+                }"></div>
+            </div>
+        </div>-->
+        <table class="cui-heat-table">
+            <tr *ngFor="let row of heatData" class="">
+                <td *ngFor="let n of row" class="" [ngClass]="{
+                    'cui-heat-g9': n >= 0.88 && n <= 1.0,
+                    'cui-heat-g8': n >= 0.77 && n < 0.88,
+                    'cui-heat-g7': n >= 0.66 && n < 0.77,
+                    'cui-heat-y6': n >= 0.55 && n < 0.66,
+                    'cui-heat-y5': n >= 0.44 && n < 0.55,
+                    'cui-heat-y4': n >= 0.33 && n < 0.44,
+                    'cui-heat-r3': n >= 0.22 && n < 0.33,
+                    'cui-heat-r2': n >= 0.11 && n < 0.22,
+                    'cui-heat-r1': n >= 0.00 && n < 0.11
+                }"></td>
+            </tr>
+        </table>
+    </mat-card>
+</a>
+
 <!--<mat-card class="example-card">
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
