@@ -15,13 +15,11 @@ export class SitesComponent implements OnInit {
 
   ngOnInit() {
       this.service.getSites().subscribe((sites: Site[]) => {
-          this.sites = sites;
-          console.log(sites);
+          this.sites = sites.reverse();
       });
       this.refreshInterval = window.setInterval(()=>{
         this.service.getSites().subscribe((sites: Site[]) => {
-          this.sites = sites;
-          console.log(sites);
+          this.sites = sites.reverse();
       });
       }, 2000);
   }
